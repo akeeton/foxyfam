@@ -1,37 +1,64 @@
-## Welcome to GitHub Pages
 
-You can use the [editor on GitHub](https://github.com/akeeton/foxyfam/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <script src="https://cdn.maptiler.com/mapbox-gl-js/v0.53.0/mapbox-gl.js"></script>
+  <link href="https://cdn.maptiler.com/mapbox-gl-js/v0.53.0/mapbox-gl.css" rel="stylesheet" />
+  <style>
+    #map {position: absolute; top: 0; right: 0; bottom: 0; left: 0;}
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script>
+    var map = new mapboxgl.Map({
+      container: 'map',
+      style: 'https://api.maptiler.com/maps/streets/style.json?key=4ke0chdpyxlvDiQVqDdz',
+      center: [-30.15735, 33.31000],
+      zoom: 2.62
+    });
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/akeeton/foxyfam/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+    map.on('load', function() {
+      map.addSource('geojson-overlay', {
+        'type': 'geojson',
+        'data': 'https://api.maptiler.com/data/cad26d21-ffff-4bc3-9c41-7a57b9630e42/features.json?key=4ke0chdpyxlvDiQVqDdz'
+      });
+      map.addLayer({
+        'id': 'geojson-overlay-fill',
+        'type': 'fill',
+        'source': 'geojson-overlay',
+        'filter': ['==', '$type', 'Polygon'],
+        'layout': {},
+        'paint': {
+          'fill-color': ['coalesce', ['get', 'fill'], '#fff'],
+          'fill-opacity': 0.2
+        }
+      });
+      map.addLayer({
+        'id': 'geojson-overlay-line',
+        'type': 'line',
+        'source': 'geojson-overlay',
+        'layout': {},
+        'paint': {
+          'line-color': ['coalesce', ['get', 'stroke'], 'rgb(68, 138, 255)'],
+          'line-width': 3
+        }
+      });
+      map.addLayer({
+        'id': 'geojson-overlay-point',
+        'type': 'circle',
+        'source': 'geojson-overlay',
+        'filter': ['==', '$type', 'Point'],
+        'layout': {},
+        'paint': {
+          'circle-color': ['coalesce', ['get', 'marker-color'], 'rgb(68, 138, 255)'],
+          'circle-stroke-color': '#fff',
+          'circle-stroke-width': 6,
+          'circle-radius': 7
+        }
+      });
+    });
+  </script>
+</body>
+</html>
