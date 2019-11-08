@@ -1,14 +1,9 @@
 
-<!DOCTYPE html>
-<html>
-<head>
-  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
   <script src="https://cdn.maptiler.com/mapbox-gl-js/v0.53.0/mapbox-gl.js"></script>
   <link href="https://cdn.maptiler.com/mapbox-gl-js/v0.53.0/mapbox-gl.css" rel="stylesheet" />
   <style>
     #map {position: absolute; top: 0; right: 0; bottom: 0; left: 0;}
   </style>
-</head>
 <body>
   <div id="map"></div>
   <script>
@@ -60,5 +55,3 @@
       });
     });
   </script>
-</body>
-</html>
